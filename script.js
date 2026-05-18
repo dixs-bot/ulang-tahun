@@ -1,400 +1,323 @@
-/* ============================================
+/* ═══════════════════════════════════════════
    MEDINA ALMEYRA NOURAINI — 1ST BIRTHDAY
-   Main JavaScript
-   ============================================ */
+   Ultra-Premium Cinematic Experience
+   ═══════════════════════════════════════════ */
 
 (function () {
     'use strict';
 
-    // --- DOM REFERENCES ---
-    const splash = document.getElementById('splash');
-    const openBtn = document.getElementById('openInvitation');
-    const mainContent = document.getElementById('mainContent');
-    const musicToggle = document.getElementById('musicToggle');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicOnIcon = musicToggle.querySelector('.music-on');
-    const musicOffIcon = musicToggle.querySelector('.music-off');
+    /* ─── Cache DOM ─── */
+    var splash     = document.getElementById('splash');
+    var enterBtn   = document.getElementById('enterBtn');
+    var app        = document.getElementById('app');
+    var musicBtn   = document.getElementById('musicBtn');
+    var bgMusic    = document.getElementById('bgMusic');
+    var galleryTrack   = document.getElementById('galleryTrack');
+    var galleryCaption = document.getElementById('galleryCaption');
+    var gDotsCont      = document.getElementById('gDots');
+    var gPrev      = document.getElementById('gPrev');
+    var gNext      = document.getElementById('gNext');
+    var viewer     = document.getElementById('imageViewer');
+    var viewerImg  = document.getElementById('viewerImg');
+    var viewerClose = document.getElementById('viewerClose');
+    var confettiEl = document.getElementById('confetti');
 
-    // --- STATE ---
-    let isMusicPlaying = false;
-    let galleryIndex = 0;
-    let galleryTouchStartX = 0;
-    let galleryTouchEndX = 0;
-    let confettiTriggered = false;
+    /* ─── State ─── */
+    var musicPlaying = false;
+    var gIndex = 0;
+    var gTouchX0 = 0;
+    var gAutoTimer = null;
+    var confettiFired = false;
 
-    // =====================
-    // SPLASH SCREEN
-    // =====================
-    function initSplashSparkles() {
-        const container = document.getElementById('splashSparkles');
-        if (!container) return;
-        const count = 25;
-        for (let i = 0; i < count; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.left = Math.random() * 100 + '%';
-            sparkle.style.top = Math.random() * 100 + '%';
-            sparkle.style.width = (Math.random() * 4 + 2) + 'px';
-            sparkle.style.height = sparkle.style.width;
-            sparkle.style.animationDelay = (Math.random() * 5) + 's';
-            sparkle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            container.appendChild(sparkle);
+    /* ═══════════════════════════════
+       SPLASH SPARKLES
+       ═══════════════════════════════ */
+    function createSparkles(parent, count) {
+        for (var i = 0; i < count; i++) {
+            var s = document.createElement('div');
+            s.className = 'sp';
+            var size = Math.random() * 4 + 2;
+            s.style.cssText =
+                'left:' + (Math.random() * 100) + '%;' +
+                'top:' + (Math.random() * 100) + '%;' +
+                'width:' + size + 'px;height:' + size + 'px;' +
+                '--dur:' + (Math.random() * 3 + 4) + 's;' +
+                '--del:' + (Math.random() * 5) + 's;';
+            parent.appendChild(s);
         }
     }
+    createSparkles(document.getElementById('splashCanvas'), 30);
 
-    function openInvitation() {
-        splash.classList.add('hidden');
-        mainContent.classList.add('visible');
-        musicToggle.classList.add('visible');
-        document.body.style.overflow = 'auto';
-        startMusic();
-        triggerConfetti();
+    /* ═══════════════════════════════
+       ENTER INVITATION
+       ═══════════════════════════════ */
+    function enter() {
+        splash.classList.add('gone');
+        app.classList.add('show');
+        musicBtn.classList.add('show');
+        document.body.style.overflow = '';
+        playMusic();
+        fireConfetti();
     }
-
-    openBtn.addEventListener('click', openInvitation);
-
-    // Prevent scroll while splash is visible
+    enterBtn.addEventListener('click', enter);
     document.body.style.overflow = 'hidden';
-    initSplashSparkles();
 
-    // =====================
-    // MUSIC CONTROL
-    // =====================
-    function startMusic() {
-        if (bgMusic && bgMusic.paused) {
-            bgMusic.volume = 0.3;
-            const playPromise = bgMusic.play();
-            if (playPromise) {
-                playPromise.then(function () {
-                    isMusicPlaying = true;
-                    updateMusicIcon();
-                }).catch(function () {
-                    // Autoplay blocked, user can toggle manually
-                });
-            }
-        }
-    }
-
-    function toggleMusic() {
+    /* ═══════════════════════════════
+       MUSIC
+       ═══════════════════════════════ */
+    function playMusic() {
         if (!bgMusic) return;
-        if (isMusicPlaying) {
+        bgMusic.volume = 0.25;
+        var p = bgMusic.play();
+        if (p && p.then) {
+            p.then(function () {
+                musicPlaying = true;
+                musicBtn.classList.add('playing');
+            }).catch(function () { /* blocked */ });
+        }
+    }
+
+    musicBtn.addEventListener('click', function () {
+        if (!bgMusic) return;
+        if (musicPlaying) {
             bgMusic.pause();
-            isMusicPlaying = false;
+            musicPlaying = false;
+            musicBtn.classList.remove('playing');
         } else {
-            bgMusic.volume = 0.3;
+            bgMusic.volume = 0.25;
             bgMusic.play().then(function () {
-                isMusicPlaying = true;
-            }).catch(function () {
-                isMusicPlaying = false;
-            });
+                musicPlaying = true;
+                musicBtn.classList.add('playing');
+            }).catch(function () {});
         }
-        updateMusicIcon();
-    }
+    });
 
-    function updateMusicIcon() {
-        if (isMusicPlaying) {
-            musicOnIcon.style.display = 'block';
-            musicOffIcon.style.display = 'none';
-        } else {
-            musicOnIcon.style.display = 'none';
-            musicOffIcon.style.display = 'block';
+    /* ═══════════════════════════════
+       HERO PARTICLES
+       ═══════════════════════════════ */
+    (function () {
+        var c = document.getElementById('heroParticles');
+        for (var i = 0; i < 20; i++) {
+            var p = document.createElement('div');
+            p.className = 'sp';
+            var sz = Math.random() * 4 + 2;
+            p.style.cssText =
+                'left:' + (Math.random() * 100) + '%;' +
+                'top:' + (40 + Math.random() * 60) + '%;' +
+                'width:' + sz + 'px;height:' + sz + 'px;' +
+                '--dur:' + (Math.random() * 4 + 5) + 's;' +
+                '--del:' + (Math.random() * 6) + 's;';
+            c.appendChild(p);
         }
-    }
+    })();
 
-    musicToggle.addEventListener('click', toggleMusic);
+    /* ═══════════════════════════════
+       COUNTDOWN
+       ═══════════════════════════════ */
+    var TARGET = new Date('2026-06-06T10:00:00').getTime();
+    var cdD = document.getElementById('cDays');
+    var cdH = document.getElementById('cHrs');
+    var cdM = document.getElementById('cMin');
+    var cdS = document.getElementById('cSec');
 
-    // =====================
-    // HERO PARTICLES
-    // =====================
-    function initHeroParticles() {
-        const container = document.getElementById('heroParticles');
-        if (!container) return;
-        const count = 18;
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'hero-particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = (50 + Math.random() * 50) + '%';
-            particle.style.width = (Math.random() * 4 + 2) + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.animationDelay = (Math.random() * 6) + 's';
-            particle.style.animationDuration = (Math.random() * 4 + 5) + 's';
-            container.appendChild(particle);
-        }
-    }
-
-    initHeroParticles();
-
-    // =====================
-    // COUNTDOWN TIMER
-    // =====================
-    function updateCountdown() {
-        const targetDate = new Date('2026-06-06T10:00:00').getTime();
-        const now = Date.now();
-        const diff = targetDate - now;
-
-        if (diff <= 0) {
-            document.getElementById('cdDays').textContent = '🎉';
-            document.getElementById('cdHours').textContent = '🌹';
-            document.getElementById('cdMinutes').textContent = '✨';
-            document.getElementById('cdSeconds').textContent = '🎂';
+    function tick() {
+        var d = TARGET - Date.now();
+        if (d <= 0) {
+            cdD.textContent = '🎉'; cdH.textContent = '🌹';
+            cdM.textContent = '✨'; cdS.textContent = '🎂';
             return;
         }
+        cdD.textContent = pad(Math.floor(d / 864e5));
+        cdH.textContent = pad(Math.floor((d % 864e5) / 36e5));
+        cdM.textContent = pad(Math.floor((d % 36e5) / 6e4));
+        cdS.textContent = pad(Math.floor((d % 6e4) / 1e3));
+    }
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    tick();
+    setInterval(tick, 1000);
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    /* ═══════════════════════════════
+       GALLERY
+       ═══════════════════════════════ */
+    var slides = galleryTrack ? galleryTrack.querySelectorAll('.gallery__slide') : [];
+    var total  = slides.length;
 
-        document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
-        document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('cdMinutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('cdSeconds').textContent = String(seconds).padStart(2, '0');
+    /* Build dots */
+    for (var di = 0; di < total; di++) {
+        var dot = document.createElement('div');
+        dot.className = 'gallery__dot' + (di === 0 ? ' on' : '');
+        dot.setAttribute('data-i', di);
+        dot.addEventListener('click', function () {
+            goSlide(parseInt(this.getAttribute('data-i')));
+        });
+        gDotsCont.appendChild(dot);
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    // =====================
-    // GALLERY SLIDER
-    // =====================
-    const galleryTrack = document.getElementById('galleryTrack');
-    const gallerySlides = galleryTrack ? galleryTrack.querySelectorAll('.gallery-slide') : [];
-    const galleryDotsContainer = document.getElementById('galleryDots');
-    const prevBtn = document.getElementById('galleryPrev');
-    const nextBtn = document.getElementById('galleryNext');
-    const totalSlides = gallerySlides.length;
-
-    function initGalleryDots() {
-        if (!galleryDotsContainer) return;
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-            dot.setAttribute('data-index', i);
-            dot.addEventListener('click', function () {
-                goToSlide(parseInt(this.getAttribute('data-index')));
-            });
-            galleryDotsContainer.appendChild(dot);
-        }
-    }
-
-    function goToSlide(index) {
-        if (index < 0) index = 0;
-        if (index >= totalSlides) index = totalSlides - 1;
-        galleryIndex = index;
-
-        const slide = gallerySlides[index];
+    function goSlide(idx) {
+        if (idx < 0) idx = 0;
+        if (idx >= total) idx = total - 1;
+        gIndex = idx;
+        var slide = slides[idx];
         if (!slide) return;
-        const offset = slide.offsetLeft - (galleryTrack.parentElement.offsetWidth / 2) + (slide.offsetWidth / 2);
+        var vp = galleryTrack.parentElement;
+        var offset = slide.offsetLeft - (vp.offsetWidth / 2) + (slide.offsetWidth / 2);
         galleryTrack.style.transform = 'translateX(' + (-offset) + 'px)';
-
-        // Update dots
-        const dots = galleryDotsContainer ? galleryDotsContainer.querySelectorAll('.gallery-dot') : [];
-        dots.forEach(function (dot, i) {
-            dot.classList.toggle('active', i === index);
-        });
-    }
-
-    function nextSlide() {
-        goToSlide(galleryIndex + 1);
-    }
-
-    function prevSlide() {
-        goToSlide(galleryIndex - 1);
-    }
-
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-
-    // Touch support
-    if (galleryTrack) {
-        galleryTrack.addEventListener('touchstart', function (e) {
-            galleryTouchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        galleryTrack.addEventListener('touchend', function (e) {
-            galleryTouchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-    }
-
-    function handleSwipe() {
-        const diff = galleryTouchStartX - galleryTouchEndX;
-        const threshold = 50;
-        if (diff > threshold) {
-            nextSlide();
-        } else if (diff < -threshold) {
-            prevSlide();
+        galleryCaption.textContent = slide.getAttribute('data-caption') || '';
+        var dots = gDotsCont.querySelectorAll('.gallery__dot');
+        for (var d = 0; d < dots.length; d++) {
+            dots[d].classList.toggle('on', d === idx);
         }
     }
 
-    initGalleryDots();
+    function nextSlide() { goSlide(gIndex + 1); }
+    function prevSlide() { goSlide(gIndex - 1); }
 
-    // Recalculate on resize
-    let resizeTimer;
-    window.addEventListener('resize', function () {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function () {
-            goToSlide(galleryIndex);
-        }, 150);
+    gNext.addEventListener('click', function () { stopAuto(); nextSlide(); });
+    gPrev.addEventListener('click', function () { stopAuto(); prevSlide(); });
+
+    /* Touch */
+    galleryTrack.addEventListener('touchstart', function (e) {
+        gTouchX0 = e.changedTouches[0].clientX;
+    }, { passive: true });
+    galleryTrack.addEventListener('touchend', function (e) {
+        var diff = gTouchX0 - e.changedTouches[0].clientX;
+        stopAuto();
+        if (diff > 45) nextSlide();
+        else if (diff < -45) prevSlide();
+    }, { passive: true });
+
+    /* Auto-play */
+    function startAuto() { gAutoTimer = setInterval(function () { goSlide((gIndex + 1) % total); }, 4500); }
+    function stopAuto()  { clearInterval(gAutoTimer); }
+
+    /* Observe gallery visibility */
+    var gallerySection = document.getElementById('gallery');
+    if (gallerySection && 'IntersectionObserver' in window) {
+        var gObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) startAuto(); else stopAuto();
+            });
+        }, { threshold: 0.25 });
+        gObs.observe(gallerySection);
+    }
+
+    /* Fullscreen viewer */
+    slides.forEach(function (sl) {
+        sl.addEventListener('click', function () {
+            var img = sl.querySelector('img');
+            if (!img) return;
+            viewerImg.src = img.src;
+            viewer.classList.add('open');
+        });
+    });
+    viewerClose.addEventListener('click', function () {
+        viewer.classList.remove('open');
+    });
+    viewer.addEventListener('click', function (e) {
+        if (e.target === viewer) viewer.classList.remove('open');
     });
 
-    // =====================
-    // SCROLL REVEAL
-    // =====================
-    function initScrollReveal() {
-        const elements = document.querySelectorAll('.scroll-reveal');
+    /* Resize */
+    var rTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(rTimer);
+        rTimer = setTimeout(function () { goSlide(gIndex); }, 180);
+    });
+
+    /* ═══════════════════════════════
+       SCROLL REVEAL
+       ═══════════════════════════════ */
+    (function () {
+        var els = document.querySelectorAll('.reveal');
         if (!('IntersectionObserver' in window)) {
-            elements.forEach(function (el) { el.classList.add('revealed'); });
+            for (var i = 0; i < els.length; i++) els[i].classList.add('visible');
             return;
         }
-
-        const observer = new IntersectionObserver(function (entries) {
+        var obs = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
-                    // Stagger children slightly
-                    const delay = entry.target.dataset.delay || 0;
+                    var d = parseInt(entry.target.getAttribute('data-delay')) || 0;
                     setTimeout(function () {
-                        entry.target.classList.add('revealed');
-                    }, delay);
-                    observer.unobserve(entry.target);
+                        entry.target.classList.add('visible');
+                    }, d);
+                    obs.unobserve(entry.target);
                 }
             });
-        }, {
-            threshold: 0.15,
-            rootMargin: '0px 0px -40px 0px'
-        });
+        }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+        for (var j = 0; j < els.length; j++) obs.observe(els[j]);
+    })();
 
-        elements.forEach(function (el, i) {
-            el.dataset.delay = (i % 4) * 100;
-            observer.observe(el);
-        });
-    }
-
-    initScrollReveal();
-
-    // =====================
-    // CONFETTI
-    // =====================
-    function triggerConfetti() {
-        if (confettiTriggered) return;
-        confettiTriggered = true;
-
-        const container = document.getElementById('confettiContainer');
-        if (!container) return;
-
-        const colors = [
-            '#C9A96E', '#D4B87A', '#E8D5A8', '#F5E6D3',
-            '#FFFFFF', '#FFD700', '#F0C987', '#DAA520'
-        ];
-        const count = 60;
-
-        for (let i = 0; i < count; i++) {
-            const piece = document.createElement('div');
-            piece.className = 'confetti-piece';
-            piece.style.left = Math.random() * 100 + '%';
-            piece.style.top = '-10px';
-            piece.style.width = (Math.random() * 8 + 4) + 'px';
-            piece.style.height = (Math.random() * 8 + 4) + 'px';
-            piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-            piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            piece.style.animationDelay = (Math.random() * 2) + 's';
-            piece.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            container.appendChild(piece);
+    /* ═══════════════════════════════
+       CONFETTI
+       ═══════════════════════════════ */
+    function fireConfetti() {
+        if (confettiFired) return;
+        confettiFired = true;
+        var colors = ['#C4A469','#D4B97E','#E8D5C4','#F5EBE0','#FFFFFF','#FFD700','#F0C987','#DAA520','#FAE8D0'];
+        for (var i = 0; i < 70; i++) {
+            var p = document.createElement('div');
+            p.className = 'confetti__piece';
+            var w = Math.random() * 7 + 4;
+            var h = Math.random() * 7 + 4;
+            p.style.cssText =
+                'left:' + (Math.random() * 100) + '%;' +
+                'top:-12px;' +
+                'width:' + w + 'px;height:' + h + 'px;' +
+                'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+                'border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';' +
+                '--fall-del:' + (Math.random() * 2.2) + 's;' +
+                '--fall-dur:' + (Math.random() * 3 + 3.5) + 's;' +
+                '--rot:' + (Math.random() * 720 + 360) + 'deg;';
+            confettiEl.appendChild(p);
         }
-
-        // Clean up confetti after animation
         setTimeout(function () {
-            container.innerHTML = '';
-            confettiTriggered = false;
-        }, 6000);
+            confettiEl.innerHTML = '';
+            confettiFired = false;
+        }, 7000);
     }
 
-    // Also trigger confetti when closing section is visible
-    const closingSection = document.getElementById('closing');
-    if (closingSection && 'IntersectionObserver' in window) {
-        const closingObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    triggerConfetti();
-                    closingObserver.unobserve(entry.target);
+    /* Fire confetti again when closing section appears */
+    var closingSec = document.getElementById('closing');
+    if (closingSec && 'IntersectionObserver' in window) {
+        var cObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    fireConfetti();
+                    cObs.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.3 });
-        closingObserver.observe(closingSection);
+        }, { threshold: 0.25 });
+        cObs.observe(closingSec);
     }
 
-    // =====================
-    // LAZY LOADING IMAGES
-    // =====================
-    if ('IntersectionObserver' in window) {
-        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-        const imageObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                    }
-                    imageObserver.unobserve(img);
-                }
-            });
-        }, { rootMargin: '200px' });
-        lazyImages.forEach(function (img) { imageObserver.observe(img); });
-    }
+    /* ═══════════════════════════════
+       WISHES FLOATING SPARKLES
+       ═══════════════════════════════ */
+    (function () {
+        var glow = document.getElementById('wishesGlow');
+        if (!glow) return;
+        for (var i = 0; i < 10; i++) {
+            var s = document.createElement('div');
+            s.className = 'sp';
+            var sz = Math.random() * 3 + 1.5;
+            s.style.cssText =
+                'left:' + (Math.random() * 100) + '%;' +
+                'top:' + (Math.random() * 100) + '%;' +
+                'width:' + sz + 'px;height:' + sz + 'px;' +
+                '--dur:' + (Math.random() * 4 + 5) + 's;' +
+                '--del:' + (Math.random() * 6) + 's;';
+            glow.appendChild(s);
+        }
+    })();
 
-    // =====================
-    // SMOOTH SCROLL FOR ANCHORS (if any)
-    // =====================
-    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+    /* ═══════════════════════════════
+       SMOOTH ANCHOR SCROLL
+       ═══════════════════════════════ */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            var t = document.querySelector(this.getAttribute('href'));
+            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
         });
     });
-
-    // =====================
-    // AUTO-GALLERY (optional subtle)
-    // =====================
-    let autoGalleryInterval;
-    function startAutoGallery() {
-        autoGalleryInterval = setInterval(function () {
-            if (galleryIndex < totalSlides - 1) {
-                goToSlide(galleryIndex + 1);
-            } else {
-                goToSlide(0);
-            }
-        }, 5000);
-    }
-
-    function stopAutoGallery() {
-        clearInterval(autoGalleryInterval);
-    }
-
-    // Start auto gallery when gallery is visible
-    const gallerySection = document.getElementById('gallery');
-    if (gallerySection && 'IntersectionObserver' in window) {
-        const galleryObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    startAutoGallery();
-                } else {
-                    stopAutoGallery();
-                }
-            });
-        }, { threshold: 0.3 });
-        galleryObserver.observe(gallerySection);
-    }
-
-    // Stop auto gallery on user interaction
-    if (prevBtn) prevBtn.addEventListener('click', stopAutoGallery);
-    if (nextBtn) nextBtn.addEventListener('click', stopAutoGallery);
-    if (galleryTrack) {
-        galleryTrack.addEventListener('touchstart', stopAutoGallery, { passive: true });
-    }
 
 })();
