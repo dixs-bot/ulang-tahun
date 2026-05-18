@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFF8F0">
+    <meta name="description" content="You are warmly invited to celebrate Medina Almeyra Nouraini's 1st Birthday — A Sunny Luxury Garden Party">
+    <title>Medina Almeyra Nouraini — 1st Birthday</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Audio -->
+    <audio id="bgMusic" loop preload="none">
+        <source src="https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Toggle -->
+    <button id="musicToggle" class="music-toggle" aria-label="Toggle Music">
+        <span class="music-icon music-off">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        </span>
+        <span class="music-icon music-on" style="display:none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </span>
+    </button>
+
+    <!-- ======== SPLASH SCREEN ======== -->
+    <section id="splash" class="splash-screen">
+        <div class="splash-bg"></div>
+        <div class="splash-sparkles" id="splashSparkles"></div>
+        <div class="splash-content">
+            <div class="splash-ornament top">
+                <svg width="60" height="30" viewBox="0 0 60 30" fill="none"><path d="M30 0C30 0 15 10 0 15C15 20 30 30 30 30C30 30 45 20 60 15C45 10 30 0 30 0Z" fill="rgba(201,169,110,0.3)"/></svg>
+            </div>
+            <p class="splash-subtitle reveal-text">You Are Invited To</p>
+            <h1 class="splash-name">Medina Almeyra</h1>
+            <p class="splash-middlename">Nouraini</p>
+            <div class="splash-divider">
+                <span class="divider-line"></span>
+                <span class="divider-diamond">◆</span>
+                <span class="divider-line"></span>
+            </div>
+            <p class="splash-event">1st Birthday Celebration</p>
+            <div class="splash-ornament bottom">
+                <svg width="60" height="30" viewBox="0 0 60 30" fill="none"><path d="M30 30C30 30 15 20 0 15C15 10 30 0 30 0C30 0 45 10 60 15C45 20 30 30 30 30Z" fill="rgba(201,169,110,0.3)"/></svg>
+            </div>
+            <button id="openInvitation" class="splash-btn">
+                <span class="btn-shine"></span>
+                <span class="btn-text">Open Invitation</span>
+                <span class="btn-glow"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- ======== MAIN CONTENT ======== -->
+    <main id="mainContent" class="main-content">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero-section">
+            <div class="hero-bg-overlay"></div>
+            <div class="hero-particles" id="heroParticles"></div>
+            <div class="hero-content">
+                <p class="hero-label scroll-reveal">Sunny Luxury Garden Party</p>
+                <div class="hero-image-frame scroll-reveal">
+                    <div class="hero-image-glow"></div>
+                    <img src="https://picsum.photos/seed/medina-baby-girl/600/800" alt="Medina Almeyra Nouraini" class="hero-image" loading="eager">
+                    <div class="hero-image-border"></div>
+                </div>
+                <h1 class="hero-name scroll-reveal">Medina Almeyra</h1>
+                <p class="hero-surname scroll-reveal">Nouraini</p>
+                <div class="hero-age-badge scroll-reveal">
+                    <span class="age-number">1</span>
+                    <span class="age-text">st Birthday</span>
+                </div>
+                <p class="hero-date scroll-reveal">June 06, 2026</p>
+            </div>
+            <div class="hero-scroll-hint">
+                <span>Scroll</span>
+                <div class="scroll-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- COUNTDOWN SECTION -->
+        <section id="countdown" class="countdown-section">
+            <div class="section-decoration">
+                <svg width="40" height="20" viewBox="0 0 40 20" fill="none"><path d="M20 0C20 0 10 7 0 10C10 13 20 20 20 20C20 20 30 13 40 10C30 7 20 0 20 0Z" fill="rgba(201,169,110,0.25)"/></svg>
+            </div>
+            <p class="section-label scroll-reveal">Counting Down To</p>
+            <h2 class="section-title scroll-reveal">The Special Day</h2>
+            <div class="countdown-grid scroll-reveal">
+                <div class="countdown-card glass-card">
+                    <span class="countdown-number" id="cdDays">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-card glass-card">
+                    <span class="countdown-number" id="cdHours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-card glass-card">
+                    <span class="countdown-number" id="cdMinutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-card glass-card">
+                    <span class="countdown-number" id="cdSeconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- STORY SECTION -->
+        <section id="story" class="story-section">
+            <div class="story-bg-glow"></div>
+            <p class="section-label scroll-reveal">Our Little Sunshine</p>
+            <h2 class="section-title scroll-reveal">A Year of Joy</h2>
+            <div class="story-content scroll-reveal">
+                <div class="story-image-frame">
+                    <img src="https://picsum.photos/seed/baby-garden-sun/600/700" alt="Medina's journey" class="story-image" loading="lazy">
+                </div>
+                <div class="story-text">
+                    <p>On a beautiful summer day, <em>June 6, 2025</em>, our world was forever changed the moment Medina Almeyra Nouraini came into our lives.</p>
+                    <p>Her first smile lit up every room. Her first laugh became our favorite melody. And her first steps turned our hearts into gardens of gratitude.</p>
+                    <p>Now, as the sun rises on her very first birthday, we celebrate 365 days of pure magic — every giggle, every milestone, every precious moment that made this year the most beautiful chapter of our lives.</p>
+                    <p class="story-highlight">You are part of this beautiful story, and we would be honored to have you celebrate this milestone with us.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALLERY SECTION -->
+        <section id="gallery" class="gallery-section">
+            <p class="section-label scroll-reveal">Precious Moments</p>
+            <h2 class="section-title scroll-reveal">Gallery</h2>
+            <div class="gallery-container scroll-reveal">
+                <div class="gallery-track" id="galleryTrack">
+                    <div class="gallery-slide">
+                        <img src="https://picsum.photos/seed/medina-photo-1/600/750" alt="Gallery 1" loading="lazy">
+                        <div class="gallery-caption">First Smile ✨</div>
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="https://picsum.photos/seed/medina-photo-2/600/750" alt="Gallery 2" loading="lazy">
+                        <div class="gallery-caption">Little Princess 👑</div>
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="https://picsum.photos/seed/medina-photo-3/600/750" alt="Gallery 3" loading="lazy">
+                        <div class="gallery-caption">Garden Day 🌸</div>
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="https://picsum.photos/seed/medina-photo-4/600/750" alt="Gallery 4" loading="lazy">
+                        <div class="gallery-caption">Sweet Dreams 🌙</div>
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="https://picsum.photos/seed/medina-photo-5/600/750" alt="Gallery 5" loading="lazy">
+                        <div class="gallery-caption">Sunshine Baby ☀️</div>
+                    </div>
+                </div>
+                <div class="gallery-dots" id="galleryDots"></div>
+                <div class="gallery-nav">
+                    <button class="gallery-prev" id="galleryPrev" aria-label="Previous">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button class="gallery-next" id="galleryNext" aria-label="Next">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENT DETAIL SECTION -->
+        <section id="event" class="event-section">
+            <div class="event-bg-pattern"></div>
+            <p class="section-label scroll-reveal">Join The Celebration</p>
+            <h2 class="section-title scroll-reveal">Event Details</h2>
+            <div class="event-cards scroll-reveal">
+                <div class="event-card glass-card">
+                    <div class="event-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
+                    <h3>Date</h3>
+                    <p>Saturday, June 6, 2026</p>
+                </div>
+                <div class="event-card glass-card">
+                    <div class="event-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3>Time</h3>
+                    <p>10:00 AM — 01:00 PM</p>
+                </div>
+                <div class="event-card glass-card">
+                    <div class="event-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <h3>Venue</h3>
+                    <p>The Garden Pavilion<br>Grand Sunshine Estate</p>
+                </div>
+                <a href="https://maps.google.com/?q=Grand+Sunshine+Estate" target="_blank" rel="noopener" class="event-card glass-card event-map-btn scroll-reveal">
+                    <div class="event-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                    </div>
+                    <div>
+                        <h3>Open in Maps</h3>
+                        <p>Get Directions</p>
+                    </div>
+                    <svg class="map-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- RSVP SECTION -->
+        <section id="rsvp" class="rsvp-section">
+            <div class="rsvp-glow"></div>
+            <p class="section-label scroll-reveal">We Would Love To See You</p>
+            <h2 class="section-title scroll-reveal">RSVP</h2>
+            <p class="rsvp-desc scroll-reveal">Kindly confirm your attendance through WhatsApp</p>
+            <a href="https://wa.me/?text=Hello!%20I%20would%20love%20to%20attend%20Medina%20Almeyra's%201st%20Birthday%20Party!%20🌸" target="_blank" rel="noopener" class="rsvp-btn scroll-reveal">
+                <span class="rsvp-btn-glow"></span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>Confirm via WhatsApp</span>
+            </a>
+        </section>
+
+        <!-- WISHES SECTION -->
+        <section id="wishes" class="wishes-section">
+            <div class="wishes-bg-glow"></div>
+            <p class="section-label scroll-reveal">From Our Hearts</p>
+            <h2 class="section-title scroll-reveal">Wishes & Prayers</h2>
+            <div class="wishes-container scroll-reveal">
+                <div class="wish-card glass-card">
+                    <div class="wish-quote">"</div>
+                    <p>May you grow into a beautiful, kind, and brilliant girl who lights up every room you enter, just like you've lit up ours.</p>
+                    <span class="wish-from">— Mommy & Daddy</span>
+                </div>
+                <div class="wish-card glass-card">
+                    <div class="wish-quote">"</div>
+                    <p>Our dearest granddaughter, may Allah bless you with health, happiness, and a lifetime of love. You are our greatest treasure.</p>
+                    <span class="wish-from">— Grandparents</span>
+                </div>
+                <div class="wish-card glass-card">
+                    <div class="wish-quote">"</div>
+                    <p>Little Medina, may your journey through life be as bright and beautiful as the sunshine that fills your name. We love you endlessly.</p>
+                    <span class="wish-from">— Your Family</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLOSING SECTION -->
+        <section id="closing" class="closing-section">
+            <div class="confetti-container" id="confettiContainer"></div>
+            <div class="closing-content scroll-reveal">
+                <div class="closing-ornament">
+                    <svg width="80" height="40" viewBox="0 0 80 40" fill="none"><path d="M40 0C40 0 20 13 0 20C20 27 40 40 40 40C40 40 60 27 80 20C60 13 40 0 40 0Z" fill="rgba(201,169,110,0.2)"/></svg>
+                </div>
+                <p class="closing-thankyou">Thank You</p>
+                <h2 class="closing-title">For Being Part Of<br>Medina's Special Day</h2>
+                <div class="closing-divider">
+                    <span class="divider-line"></span>
+                    <span class="divider-diamond">◆</span>
+                    <span class="divider-line"></span>
+                </div>
+                <p class="closing-name">Medina Almeyra Nouraini</p>
+                <p class="closing-tagline">Our little sunshine turns one ☀️</p>
+                <div class="closing-ornament bottom">
+                    <svg width="80" height="40" viewBox="0 0 80 40" fill="none"><path d="M40 40C40 40 20 27 0 20C20 13 40 0 40 0C40 0 60 13 80 20C60 27 40 40 40 40Z" fill="rgba(201,169,110,0.2)"/></svg>
+                </div>
+            </div>
+            <footer class="footer">
+                <p>Made with <span class="heart">♥</span> for Medina</p>
+            </footer>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
